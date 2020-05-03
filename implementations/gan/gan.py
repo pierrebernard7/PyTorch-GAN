@@ -9,6 +9,7 @@ from torchvision.utils import save_image
 from torch.utils.data import DataLoader
 from torchvision import datasets
 from torch.autograd import Variable
+from data.dataset import HDF5Dataset
 
 import torch.nn as nn
 import torch.nn.functional as F
@@ -115,19 +116,10 @@ if len(os.listdir(save_folder)) is not 0:
     raise Exception('Directory is not empty!')
 
 # Configure data loader
-os.makedirs("../../data/mnist", exist_ok=True)
-dataloader = torch.utils.data.DataLoader(
-    datasets.MNIST(
-        "../../data/mnist",
-        train=True,
-        download=True,
-        transform=transforms.Compose(
-            [transforms.Resize(opt.img_size), transforms.ToTensor(), transforms.Normalize([0.5], [0.5])]
-        ),
-    ),
-    batch_size=opt.batch_size,
-    shuffle=True,
-)
+dataset_gt = HDF5Dataset(file_path='../../data/Camus/camus01.hdf5', dataset_key='train',
+                            input_size=(opt.img_size, opt.img_size))
+dataloader = DataLoader(dataset_gt, batch_size=opt.batch_size, shuffle=True, num_workers=8, pin_memory=True)
+
 
 # Optimizers
 optimizer_G = torch.optim.Adam(generator.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
