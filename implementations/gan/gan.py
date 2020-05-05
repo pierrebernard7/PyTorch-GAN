@@ -104,9 +104,9 @@ else:
     print("using CPU")
 
 # Configure data loader
-dataset_gt = HDF5Dataset(file_path='../../data/Camus/camus01.hdf5', dataset_key='train',
+dataset = HDF5Dataset(file_path='../../data/Camus/camus01.hdf5', dataset_key='train',
                             input_size=(opt.img_size, opt.img_size))
-dataloader = DataLoader(dataset_gt, batch_size=opt.batch_size, shuffle=True, num_workers=8, pin_memory=True)
+dataloader = DataLoader(dataset, batch_size=opt.batch_size, shuffle=True, num_workers=8, pin_memory=True)
 
 
 # Optimizers

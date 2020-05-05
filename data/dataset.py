@@ -80,13 +80,14 @@ class HDF5Dataset(data.Dataset):
         mask1 = transforms.ToTensor()(mask1)
         mask2 = transforms.ToTensor()(mask2)
         mask3 = transforms.ToTensor()(mask3)
-        mask = torch.cat((mask0, mask1, mask2, mask3), 0).unsqueeze_(0)
+        mask = torch.cat((mask0, mask1, mask2, mask3), 0)
         return image, mask
 
     def __getitem__(self, index):
         x = torch.from_numpy(np.transpose(self.imgs[index], (2, 0, 1)))
         y = torch.from_numpy(np.transpose(self.gt[index], (2, 0, 1)))
-        x, y = self.transform(image=x, mask=y, input_size=self.input_size)
+        if self.input_size != (256, 256):
+            x, y = self.transform(image=x, mask=y, input_size=self.input_size)
         return x, y
 
     def __len__(self):

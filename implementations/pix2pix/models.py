@@ -119,7 +119,7 @@ class Discriminator(nn.Module):
             return layers
 
         self.model = nn.Sequential(
-            *discriminator_block(in_channels * 2, 64, normalization=False),
+            *discriminator_block(5, 64, normalization=False),
             *discriminator_block(64, 128),
             *discriminator_block(128, 256),
             *discriminator_block(256, 512),
